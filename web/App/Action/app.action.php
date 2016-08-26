@@ -21,7 +21,7 @@ abstract class AppAction extends Action
 
 	public $token;
 	
-	public $pageTitle   = "用户管理";
+	public $pageTitle   = "我的博客";
 	/**
 	* 前置操作(框架自动调用)
 	* @author	void
@@ -32,37 +32,6 @@ abstract class AppAction extends Action
 	*/
 	public function before()
 	{
-		$mods = array(
-			'login'			=> '*',
-			'register'		=> '*',
-			'test'			=> '*',
-
-		);
-
-		$allow  = false;
-		$mod	= $this->mod;
-		if ( isset($mods[$mod]) ) {
-			if ( is_array($mods[$mod]) ) {
-				$allow = in_array($action, $mods[$mod]) ? true : false;
-			} else {
-				$allow = $mods[$mod] == '*' ? true : false;
-			}
-		}
-		$isLogin = $this->getLoginUser();
-
-		//有用户账号就必须判断账号是否有效
-		if ( !empty($this->username) ){
-			$userinfo = $this->load('user')->getInfo($this->username);
-			if(empty($userinfo) || $userinfo['isUse'] != 1) {
-				$this->removeUser();
-				$this->redirect('未登录或权限不够', '/login');
-			}			
-		}
-		if ( !$allow && !$isLogin) {
-			$this->redirect('请登录后操作', '/login');
-			exit;
-		}
-
 		$this->set('_title_', $this->pageTitle);
 		$this->set('_mod_', $this->mod);
 		$this->set('_act_', $this->action);
